@@ -66,7 +66,6 @@ export const login = async (req, res) => {
     }
 }
 export const logout = async (req, res) => {
-    console.log("121");
     try {
         return res.cookie("jwt", null, {
             expires: new Date(Date.now())
@@ -74,7 +73,13 @@ export const logout = async (req, res) => {
     } catch (error) {
         console.error(error.message);
         return res.status(500).json({ error: "Internal Server Error" })
-
     }
-
+}
+export const getMe = async (req, res) => {
+    try {
+        const getDetails = await userModel.findById(req.user._id).select("-password");
+        return res.status(200).json(getDetails)
+    } catch (error) {
+        console.error(error.message);
+    }
 }
